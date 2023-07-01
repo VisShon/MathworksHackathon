@@ -1,4 +1,3 @@
-import Chart from 'chart.js/auto';
 import DoughnutChart from './DoughnutChart';
 function CandidateStats({candidates,left,completed}) {
 
