@@ -8,7 +8,7 @@ import nProgress from "nprogress"
 function Candidates() {
 
 	const [sort,setSort] = useState(false)
-	const [searchParams,setSearchParams] = useState([])
+	const [searchParam,setSearchParam] = useState([])
 	const [candidates, setCandidates] = useState(
 		[
 			{
@@ -100,7 +100,7 @@ function Candidates() {
 	// },[loading])
 
 	return (
-		<main className="w-screen h-auto  justify-center items-center flex flex-col p-10 relative">
+		<main className="w-screen h-auto relative justify-center items-center flex flex-col p-10">
 			<div className="flex w-full justify-between h-[5%] mb-10 z-20 ">
 				<button
 					className="bg-main rounded-xl p-2 text-secondary hover:shadow-md active:opacity-95 w-[10%]"
@@ -108,12 +108,21 @@ function Candidates() {
 					Sort
 				</button>
 				<Search
-					searchParam={searchParams}
-					setSearchParam={setSearchParams}
+					searchParam={searchParam}
+					setSearchParam={setSearchParam}
 				/>
 			</div>
-			{candidates.map(({name,college,role,description},index)=>(
+
+			{candidates.filter(item=>
+			(searchParam==''?true:
+			item?.name?.toLowerCase().includes(searchParam)||
+			item?.role?.toLowerCase().includes(searchParam)||
+			item?.college?.toLowerCase().includes(searchParam)||
+			item?.branch?.toLowerCase().includes(searchParam)))
+			.map(({name,college,role,description,id},index)=>(
 				<CandidateCard
+					key={index}
+					id={id}
 					name={name}
 					college={college}
 					role={role}

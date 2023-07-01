@@ -1,6 +1,9 @@
-function CandidateCard({name,college,role,description}) {
+import Link from "next/link"
+
+function CandidateCard({id,name,college,role,description}) {
 	return (
-		<div className="flex flex-col justify-center items-left text-left relative bg-[white] rounded-xl w-full p-5 shadow-sm my-5 text-[#898989]">
+		<Link className="flex flex-col justify-center items-left text-left relative bg-[white] rounded-xl w-full p-5 shadow-sm my-5 text-[#898989] hover:shadow-md"
+				href={`/interview/${id}`}>
 			<h2 className="text-main">
 				{name+', '+college}
 			</h2>
@@ -10,7 +13,7 @@ function CandidateCard({name,college,role,description}) {
 			<span className="mt-10">
 				{description}
 			</span>
-		</div>
+		</Link>
 	)
 }
 
