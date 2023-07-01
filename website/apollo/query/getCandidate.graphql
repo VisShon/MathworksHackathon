@@ -1,0 +1,22 @@
+query Candidates($where: CandidateWhere) {
+  candidates(where: $where) {
+    candidateId
+    name
+    college
+    degree
+    email
+    telegramId
+    cgpa
+    track
+    skillset
+    interviewStatus
+    interview{
+      interviewId
+      timeStart 
+      timeEnd
+      duration
+      description
+      releventLinks
+    }
+  }
+}

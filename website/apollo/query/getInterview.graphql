@@ -1,0 +1,29 @@
+query getInterviews($where: InterviewWhere) {
+  interviews(where: $where) {
+    interviewId
+    timeStart 
+    timeEnd
+    duration
+    description
+    releventLinks
+    interviewer{
+        interviewerId
+        userName
+        email
+        skillset
+        status
+    }
+    candidate{
+      candidateId
+      name
+      college
+      degree
+      email
+      telegramId
+      cgpa
+      track
+      skillset
+      interviewStatus
+    }
+  }
+}
