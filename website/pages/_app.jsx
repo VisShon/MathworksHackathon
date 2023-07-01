@@ -37,7 +37,7 @@ export default function App({ Component, pageProps }) {
 		<>	
 			<ApolloProvider client={Apolloclient}>
 				<Component {...pageProps}/>
-				<Navbar />
+				{/* <Navbar /> */}
 			</ApolloProvider>
 		</>
 	)
