@@ -1,8 +1,8 @@
 import { useState } from "react"
-import { useMutation } from "@apollo/client"
+import { useQuery } from "@apollo/client"
 import nProgress from 'nprogress'
 
-function FeedbackForm(id) {
+function FeedbackResult(id) {
 
 	const [feedback,setFeedback] = useState("")
 	const [remark,setRemark] = useState("")
@@ -14,35 +14,25 @@ function FeedbackForm(id) {
 		{name:'parameter 5', value:false}
 	])
 
-	// const [addFeedback,{error,loading,data}] = useMutation(AddFeedback);
-	const handleFeedbackSubmission = async () =>{
-		// await addFeedback({
-		// 	variables:{
-		// 		input: [
-		// 		  {}
-		// 		]
-		// 	}
-		// })
-	}
-
+    // const { loading, error, data } = useQuery(GetCandidateFeedback,{
+	// 	variables:{
+	// 		where:{
+	// 			id:id
+	// 		}
+	// 	}
+	// })
+	
 	// useEffect(() => {
 	// 	if(loading){
 	// 		nProgress.start()
 	// 	}
 	// 	if(!loading){
 	// 		nProgress.done(false)
-	// 		if(data)
-	// 			router.push(`/event/${data.createEvents.events[0].id}`)
-	// 		if(error)
-	// 			alert(error)
+	// 		setFeedback(data?.events[0])
 	// 	}
-		
 	// 	if(error){
 	// 		nProgress.done(false)
 	// 	}
-	// },[loading])
-
-
 
 	return (
 		<main className="flex gap-10 bg-secondary w-full h-full rounded-2xl p-10 text-[black]">
@@ -52,7 +42,6 @@ function FeedbackForm(id) {
 					<input 
 						className="p-2 border-2 border-[grey] rounded-md w-full"
 						type="text" 
-						onChange={(e)=>setFeedback(e.target.value)}
 						value={feedback}
 					/>
 				</div>
@@ -66,13 +55,7 @@ function FeedbackForm(id) {
 									type="checkbox"
 									id={`custom-checkbox-${index}`}
 									name={name}
-									value={value}
-									onChange={()=>{
-										let newParams = params
-										newParams[index].value = !params[index].value
-										setParams(newParams)
-										console.log(params)
-									}}
+                                    checked={value}
 								/>
 								<label for={`custom-checkbox-${index}`}>
 									{name}
@@ -82,19 +65,12 @@ function FeedbackForm(id) {
 					);
 					})}
 				</ul>
-
-				<button
-					className="bg-main rounded-xl p-2 text-secondary hover:shadow-md active:opacity-95"
-					onClick={handleFeedbackSubmission}>
-					Submit
-				</button>
 			</div>
 
 			<div className="w-[50%] h-[90%]">
 				<p>Remark</p>
 				<textarea 
 					className="p-2 border-2 border-[grey] rounded-md w-full h-full"
-					onChange={(e)=>setRemark(e.target.value)}
 					value={remark}
 				/>
 			</div>
@@ -102,4 +78,4 @@ function FeedbackForm(id) {
 	)
 }
 
-export default FeedbackForm
+export default FeedbackResult

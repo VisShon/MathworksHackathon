@@ -10,6 +10,7 @@ export const Initalize = () => {
 		cache: new InMemoryCache(),
 		link,
 	});
+	
 
 	return client
 }

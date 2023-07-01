@@ -1,0 +1,65 @@
+type Admin {
+	id: ID! @id
+  userName: String
+  email: String!
+  password: String! @writeonly
+
+  interviewList: [Interview!]! @relationship(type: "Interview", direction: OUT)
+  candidateList: [Candidate!]! @relationship(type: "Candidate", direction: OUT)
+  interviewerList: [Interviewer!]! @relationship(type: "Interviewer", direction: OUT)
+}
+
+type Interviewer {
+  interviewerId: ID! @id
+  userName: String
+  email: String!
+  password: String! @writeonly
+  skillset: [String]
+  status: InterviewerStatus
+
+  admin: Admin @relationship(type: "Interviewer", direction: IN)
+  interviewList: [Interview!]! @relationship(type: "Interview", direction: OUT)
+  candidateList: [Candidate!]! @relationship(type: "Candidate", direction: OUT)
+}
+
+type Interview {
+  interviewId: ID! @id
+  timeStart: Date 
+  timeEnd: Date
+  duration: Float
+  description: String
+  releventLinks: [String]
+  
+  admin: Admin @relationship(type: "Interview", direction: IN)
+  interviewer: Interviewer @relationship(type: "Interview", direction: IN)
+  candidate: Candidate! @relationship(type: "Candidate", direction: OUT)
+}
+
+type Candidate {
+  candidateId: ID! @id
+  name: String!
+  college: String
+  degree: String
+  email: String!
+  telegramId: String!
+  cgpa: String
+  track: String!
+  skillset: [String] 
+  interviewStatus: CandidateStatus
+
+  admin: Admin! @relationship(type: "Candidate", direction: IN)
+  interview: Interview! @relationship(type: "Candidate", direction: IN)
+}
+
+enum InterviewerStatus{
+  WAITING
+  AVAILABLE
+  ININTERVIEW
+}
+
+enum CandidateStatus{
+  TOBEINTERVIEWED
+  WAITING
+  REJECTED
+  SELECTED
+}
