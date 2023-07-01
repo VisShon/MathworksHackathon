@@ -13,6 +13,7 @@ type Interviewer {
   interviewerId: ID! @id
   userName: String
   email: String!
+  role: String
   password: String! @writeonly
   skillset: [String]
   status: InterviewerStatus
