@@ -4,6 +4,7 @@ function CandidateInfoPanel({id, image, name, college, skills, description}) {
   return (
 	<div className='bg-main rounded-xl flex flex-col w-[30%] h-full p-10 text-center items-center justify-between  overflow-y-scroll'>
 		<Image
+			alt='profile'
 			src={image}
 			height={100}
 			width={100}
