@@ -16,7 +16,6 @@ type Interviewer {
   skillset: [String]
   status: InterviewerStatus
   interviewList: [Interview!]! @relationship(type: "Interview", direction: OUT)
-  admin: Admin! @relationship(type: "Admin", direction: OUT)
 }
 
 type Interview {
@@ -29,8 +28,6 @@ type Interview {
   releventLinks: [String]
   interviewer: Interviewer @relationship(type: "Interview", direction: IN)
   candidate: Candidate! @relationship(type: "Interview", direction: IN)
-  admin: Admin! @relationship(type: "Admin", direction: OUT)
-
 }
 
 type Candidate {
@@ -46,7 +43,6 @@ type Candidate {
   skillset: [String] 
   interviewStatus: CandidateStatus
   interviewList: [Interview!]! @relationship(type: "Interview", direction: OUT)
-  admin: Admin! @relationship(type: "Admin", direction: OUT)
 }
 
 type Feedback {
