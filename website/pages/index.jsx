@@ -11,8 +11,8 @@ export default function Home() {
 	const [managerData, setManagerData] = useState()
 	const { loading, error, data } = useQuery(GetInterviewer,{
 		variables:{
-			where:{
-				interviewerId:1
+			where: {
+			  interviewerId: "5183141a-2884-4726-8ff1-39faec665f7c"
 			}
 		}
 	})
@@ -23,12 +23,13 @@ export default function Home() {
 		}
 		if(!loading){
 			nProgress.done(false)
-			setManagerData(data)
+			setManagerData(data?.interviewers[0])
+			sessionStorage.setItem(data?.interviewers[0].image,'image')
 		}
 		if(error){
 			nProgress.done(false)
 		}
-	},[])
+	},[loading])
 
 	return (
 		<main>
@@ -49,9 +50,9 @@ export default function Home() {
 				<div className='flex flex-col w-[30%] px-10 relative'>
 					<ManagerInfoPanel
 						image={managerData?.image} 
-						name={managerData?.name} 
+						name={managerData?.userName} 
 						role={managerData?.role}
-						skills={managerData?.skills}
+						skills={managerData?.skillset}
 					/>
 				</div>
 

@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
 import nProgress from 'nprogress'
-import AdminToolbar from "@/components/AdminToolbar";
+import AdminToolbar from "@/components/AdminCandidateToolbar";
 
 function CandidateProfile() {
 	const router = useRouter();

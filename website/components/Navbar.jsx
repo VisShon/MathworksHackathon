@@ -6,11 +6,12 @@ import Link from 'next/link'
 function Navbar() {
 
 	const router = useRouter()
+	const [image,setImage] = useState('/profile.svg')
 	const [route,setRoute] = useState(router.asPath)
 
 	useEffect(() => {
 		setRoute(router.asPath)
-		}, [router.asPath]);
+	}, [router.asPath]);
 
 	return (
 		route!=='/login'&&
@@ -50,7 +51,7 @@ function Navbar() {
 				<Link href={'/profile'} className=" flex flex-col relative">
 					<Image 
 						className='rounded-full'
-						src={'/ManagerProfile.png'} 
+						src={image?image:'/profile.svg'} 
 						width={40} 
 						height={40} 
 						alt={'Vantage'} 

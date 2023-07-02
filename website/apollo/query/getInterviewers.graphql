@@ -1,0 +1,9 @@
+query GetInterviewers{
+  interviewers{
+    interviewerId
+    image
+    role
+    status
+    userName
+  }
+}

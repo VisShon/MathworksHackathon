@@ -9,6 +9,7 @@ type Interviewer {
   interviewerId: ID! @id
   userName: String
   email: String!
+  admin: String @writeonly
   role: String
   image: String
   password: String! @writeonly
@@ -22,6 +23,7 @@ type Interview {
   timeStart: Date 
   timeEnd: Date
   duration: Float
+  admin: String @writeonly
   description: String
   releventLinks: [String]
   interviewer: Interviewer @relationship(type: "Interview", direction: IN)
@@ -34,6 +36,7 @@ type Candidate {
   college: String
   degree: String
   email: String!
+  admin: String @writeonly
   telegramId: String!
   cgpa: String
   track: String!
@@ -54,3 +57,45 @@ enum CandidateStatus{
   REJECTED
   SELECTED
 }
+
+extend type Interviewer 
+	@auth(
+	rules:[{
+		operations: [DELETE,UPDATE,CONNECT,DISCONNECT]
+		allow: {
+			admin:"$jwt.id"
+		}
+	},
+	{
+		operations: [CREATE]
+		isAuthenticated: true
+	}]
+)
+
+extend type Interview
+	@auth(
+	rules:[{
+		operations: [DELETE,UPDATE,CONNECT,DISCONNECT]
+		allow: {
+			admin:"$jwt.id"
+		}
+	},
+	{
+		operations: [CREATE]
+		isAuthenticated: true
+	}]
+)
+
+extend type Candidate 
+	@auth(
+	rules:[{
+		operations: [DELETE,UPDATE,CONNECT,DISCONNECT]
+		allow: {
+			admin:"$jwt.id"
+		}
+	},
+	{
+		operations: [CREATE]
+		isAuthenticated: true
+	}]
+)
