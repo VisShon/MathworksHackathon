@@ -20,8 +20,8 @@ type Interviewer {
 
 type Interview {
   interviewId: ID! @id
-  timeStart: Date 
-  timeEnd: Date
+  timeStart: DateTime
+  timeEnd: DateTime
   duration: Float
   admin: String @writeonly
   description: String
