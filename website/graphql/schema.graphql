@@ -1,5 +1,5 @@
 type Admin {
-	id: ID! @id
+	id  ID! @id
   userName: String
   email: String!
   password: String! @writeonly
@@ -16,6 +16,7 @@ type Interviewer {
   skillset: [String]
   status: InterviewerStatus
   interviewList: [Interview!]! @relationship(type: "Interview", direction: OUT)
+  admin: Admin! @relationship(type: "Admin", direction: OUT)
 }
 
 type Interview {
@@ -28,6 +29,8 @@ type Interview {
   releventLinks: [String]
   interviewer: Interviewer @relationship(type: "Interview", direction: IN)
   candidate: Candidate! @relationship(type: "Interview", direction: IN)
+  admin: Admin! @relationship(type: "Admin", direction: OUT)
+
 }
 
 type Candidate {
@@ -43,6 +46,18 @@ type Candidate {
   skillset: [String] 
   interviewStatus: CandidateStatus
   interviewList: [Interview!]! @relationship(type: "Interview", direction: OUT)
+  admin: Admin! @relationship(type: "Admin", direction: OUT)
+}
+
+type Feedback {
+  confidence: Boolean!
+  spokenSkills: Boolean!
+  technicalSkills: Boolean!
+  problemSolving: Boolean!
+  teamwork: Boolean!
+  feedbackResponse: String!
+  feedbackDescription: String
+  interview: Interview! @relationship(type: "Interview", direction: IN)
 }
 
 extend type Interviewer 
@@ -79,6 +94,24 @@ extend type Candidate
 		operations: [DELETE,UPDATE,CONNECT,DISCONNECT]
 		allow: {
 			admin:"$jwt.id"
+		}
+	},
+	{
+		operations: [CREATE]
+		isAuthenticated: true
+	}]
+)
+
+extend type Feedback 
+	@auth(
+	rules:[{
+		operations: [DELETE,UPDATE,CONNECT,DISCONNECT]
+		allow: {
+			interview:{
+        interviewer:{
+          interviewerId:"$jwt.id"
+        }
+      }
 		}
 	},
 	{
