@@ -1,5 +1,5 @@
 type Admin {
-	id  ID! @id
+	id: ID! @id
   userName: String
   email: String!
   password: String! @writeonly
@@ -45,19 +45,6 @@ type Candidate {
   interviewList: [Interview!]! @relationship(type: "Interview", direction: OUT)
 }
 
-enum InterviewerStatus{
-  WAITING
-  AVAILABLE
-  ININTERVIEW
-}
-
-enum CandidateStatus{
-  TOBEINTERVIEWED
-  WAITING
-  REJECTED
-  SELECTED
-}
-
 extend type Interviewer 
 	@auth(
 	rules:[{
@@ -99,3 +86,17 @@ extend type Candidate
 		isAuthenticated: true
 	}]
 )
+
+enum InterviewerStatus{
+  WAITING
+  AVAILABLE
+  ININTERVIEW
+}
+
+enum CandidateStatus{
+  TOBEINTERVIEWED
+  WAITING
+  REJECTED
+  SELECTED
+}
+

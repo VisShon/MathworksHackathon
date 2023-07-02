@@ -14,7 +14,6 @@ export async function middleware(req) {
 		try {
 			await verify(jwt.value, process.env.JWT_KEY);
 			const user = await decode(jwt.value)
-
 			if(user.id == process.env.ADMIN_ID){
 				req.nextUrl.pathname = pathname;
 				return NextResponse.next();
@@ -30,7 +29,7 @@ export async function middleware(req) {
 
 
 	//Manager redirects
-	if (pathname.startsWith("/")||(pathname.startsWith("/compile"))||(pathname.startsWith("/candidates"))(pathname.startsWith("/interview"))){
+	if (pathname=="/"||(pathname.startsWith("/compile"))||(pathname.startsWith("/candidates"))||(pathname.startsWith("/interview"))){
 		if (jwt == undefined) {
 			req.nextUrl.pathname = '/login';
 			return NextResponse.redirect(req.nextUrl);
@@ -65,5 +64,5 @@ export async function decode(token) {
 }
 
 export const config = {
-	matcher: ['/','/interview/:id*','/candidates/:id*','/login', '/compile'],
+	matcher: ['/','/interview/:id*','/candidates/:id*','/login', '/compile', '/admin'],
 }

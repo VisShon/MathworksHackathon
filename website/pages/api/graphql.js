@@ -79,22 +79,18 @@ export const logIn = async(args) =>{
 	}`
 
 	const admin = await Admin.find({
-		where:{email:args.email},
+		where:{password:args.password},
 		adminSelectionSet
 	}) 
 
 	const interviewer = await Interviewer.find({
-		where:{email:args.email},
+		where:{password:args.password},
 		interviewerSelectionSet
 	}) 
 
+
 	if(admin.length!==0){
-
 		const correctPassword = await compare(args.password,admin[0].password)
-		console.log(correctPassword)
-
-        console.log('token set form login')
-
 		if(correctPassword){
 			const token = jwt.sign(
 				{
@@ -111,12 +107,8 @@ export const logIn = async(args) =>{
 	}
 
 	if(interviewer.length!==0){
-
 		const correctPassword = await compare(args.password,interviewer[0].password)
-		console.log(correctPassword)
-
-        console.log('token set form login')
-
+		console.log(correctPassword,args.password,interviewer[0].password)
 		if(correctPassword){
 			const token = jwt.sign(
 				{
@@ -130,8 +122,6 @@ export const logIn = async(args) =>{
 			)
 			return token
 		}
-
-
 		return 'USER_NOT_EXISTS'
 	}
 
