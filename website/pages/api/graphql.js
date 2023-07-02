@@ -60,6 +60,84 @@ const ogm = new OGM({
 })
 
 
+export const logIn = async(args) =>{
+	await ogm.init()
+	const Interviewer = ogm.model('Interviewer')
+	const Admin = ogm.model('Admin')
+
+	const adminSelectionSet = `{
+		userName
+		email
+		password
+	}`
+
+	const interviewerSelectionSet = `{
+		interviewerId
+		userName
+		email
+		password
+	}`
+
+	const admin = await Admin.find({
+		where:{email:args.email},
+		adminSelectionSet
+	}) 
+
+	const interviewer = await Interviewer.find({
+		where:{email:args.email},
+		interviewerSelectionSet
+	}) 
+
+	if(admin.length!==0){
+
+		const correctPassword = await compare(args.password,admin[0].password)
+		console.log(correctPassword)
+
+        console.log('token set form login')
+
+		if(correctPassword){
+			const token = jwt.sign(
+				{
+					...admin[0],
+					id:process.env.ADMIN_ID
+				},
+				process.env.JWT_KEY,
+				{
+					expiresIn:2592000
+				}
+			)
+			return token
+		}
+	}
+
+	if(interviewer.length!==0){
+
+		const correctPassword = await compare(args.password,interviewer[0].password)
+		console.log(correctPassword)
+
+        console.log('token set form login')
+
+		if(correctPassword){
+			const token = jwt.sign(
+				{
+					...interviewer[0],
+					id:interviewer[0]?.id
+				},
+				process.env.JWT_KEY,
+				{
+					expiresIn:2592000
+				}
+			)
+			return token
+		}
+
+
+		return 'USER_NOT_EXISTS'
+	}
+
+	return 'USER_NOT_EXISTS'
+}
+
 export default startServerAndCreateNextHandler(apolloServer,{
 	context: async (req) => {
 		const token = req.cookies.token;

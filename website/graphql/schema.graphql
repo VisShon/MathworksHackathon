@@ -1,5 +1,5 @@
 type Admin {
-	id: ID! @id
+	id  ID! @id
   userName: String
   email: String!
   password: String! @writeonly
