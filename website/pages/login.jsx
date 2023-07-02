@@ -1,10 +1,17 @@
 import Image from "next/image"
-import { useState } from "react"
+import { useRouter } from "next/router"
+import { useState,useEffect } from "react"
+import nProgress from "nprogress"
+
 function login() {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+	const router = useRouter()
+	const [loading,setLoading] = useState(false)
+	const [error,setError] = useState('')
 
 	const handleClick = async() => {
+		setLoading(true)
 		const res = await fetch("/api/auth/login", {
 			method: "post",
 			mode:'cors',
@@ -16,11 +23,26 @@ function login() {
 				password
 			})
 		})
+		setLoading(false)
 
-		if(res.status==200){
-			router.push('/profile')
+		if(res.status==200)
+			router.push('/')
+		else if(res.status!=200){
+			setError(res.statusText)
+			setTimeout(()=>setError(''),2000)
 		}
+
 	}
+	
+	useEffect(() => {
+		if(loading)
+			nProgress.start()
+		if(!loading)
+			nProgress.done(false)
+		if(error){
+			nProgress.done(false)
+		}
+	},[loading])
 
 	return (
 		<div className="w-screen h-screen bg-main flex justify-center items-center">
@@ -50,6 +72,9 @@ function login() {
 						>
 					</input>	
 				</div>
+
+				{error&&<h2 className="text-[red] italic my-3">{error}</h2>}
+
 				<button 
 					className="hover:shadow-md  active:opacity-80 flex flex-col text-secondary rounded-xl p-4 px-10 bg-main justify-center items-center w-[40%] h-[10%] mt-20"
 					onClick={handleClick}>
