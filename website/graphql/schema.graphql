@@ -20,8 +20,8 @@ type Interviewer {
 
 type Interview {
   interviewId: ID! @id
-  timeStart: Date 
-  timeEnd: Date
+  timeStart: DateTime
+  timeEnd: DateTime
   duration: Float
   admin: String @writeonly
   description: String
@@ -43,6 +43,17 @@ type Candidate {
   skillset: [String] 
   interviewStatus: CandidateStatus
   interviewList: [Interview!]! @relationship(type: "Interview", direction: OUT)
+}
+
+type Feedback {
+  confidence: Boolean!
+  spokenSkills: Boolean!
+  technicalSkills: Boolean!
+  problemSolving: Boolean!
+  teamwork: Boolean!
+  feedbackResponse: String!
+  feedbackDescription: String
+  interview: Interview! @relationship(type: "Interview", direction: IN)
 }
 
 extend type Interviewer 
@@ -79,6 +90,24 @@ extend type Candidate
 		operations: [DELETE,UPDATE,CONNECT,DISCONNECT]
 		allow: {
 			admin:"$jwt.id"
+		}
+	},
+	{
+		operations: [CREATE]
+		isAuthenticated: true
+	}]
+)
+
+extend type Feedback 
+	@auth(
+	rules:[{
+		operations: [DELETE,UPDATE,CONNECT,DISCONNECT]
+		allow: {
+			interview:{
+        interviewer:{
+          interviewerId:"$jwt.id"
+        }
+      }
 		}
 	},
 	{
