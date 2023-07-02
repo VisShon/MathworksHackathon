@@ -7,7 +7,7 @@ function ManagerInfoPanel({image, name, role, skills}) {
 			<div className='bg-main rounded-xl flex flex-col w-full h-full mb-4 p-10 text-center items-center justify-between  overflow-y-scroll'>
 				<Image
 					alt='profile'
-					src={image}
+					src={image?image:'/profile.svg'}
 					height={1000}
 					width={1000}
 					className='w-[60%] border-2 border-[white] rounded-full '
