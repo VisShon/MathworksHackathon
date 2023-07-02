@@ -10,6 +10,7 @@ query GetInterviewer($where: InterviewerWhere) {
       }
       timeEnd
       timeStart
+      interviewStatus
     }
     email
     role

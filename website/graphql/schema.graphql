@@ -3,10 +3,6 @@ type Admin {
   userName: String
   email: String!
   password: String! @writeonly
-
-  interviewList: [Interview!]! @relationship(type: "Interview", direction: OUT)
-  candidateList: [Candidate!]! @relationship(type: "Candidate", direction: OUT)
-  interviewerList: [Interviewer!]! @relationship(type: "Interviewer", direction: OUT)
 }
 
 type Interviewer {
@@ -17,10 +13,7 @@ type Interviewer {
   password: String! @writeonly
   skillset: [String]
   status: InterviewerStatus
-
-  admin: Admin @relationship(type: "Interviewer", direction: IN)
   interviewList: [Interview!]! @relationship(type: "Interview", direction: OUT)
-  candidateList: [Candidate!]! @relationship(type: "Candidate", direction: OUT)
 }
 
 type Interview {
@@ -30,8 +23,6 @@ type Interview {
   duration: Float
   description: String
   releventLinks: [String]
-  
-  admin: Admin @relationship(type: "Interview", direction: IN)
   interviewer: Interviewer @relationship(type: "Interview", direction: IN)
   candidate: Candidate! @relationship(type: "Candidate", direction: OUT)
 }
@@ -47,8 +38,6 @@ type Candidate {
   track: String!
   skillset: [String] 
   interviewStatus: CandidateStatus
-
-  admin: Admin! @relationship(type: "Candidate", direction: IN)
   interview: Interview! @relationship(type: "Candidate", direction: IN)
 }
 
