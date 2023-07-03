@@ -124,7 +124,7 @@ enum InterviewerStatus{
 
 enum CandidateStatus{
   TOBEINTERVIEWED
-  WAITING
+  ONGOING
   REJECTED
   SELECTED
 }
