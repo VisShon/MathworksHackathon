@@ -1,5 +1,5 @@
 import Search from "@/components/Search"
-import CandidateCard from "@/components/CandidateCard"
+import CompletedCandidateCard from "@/components/CompletedCandidateCard"
 import GetInterviewer from '@/apollo/query/getInterviewCompleted.graphql'
 import nProgress from "nprogress"
 import { decode } from "jsonwebtoken"
@@ -15,7 +15,7 @@ function Candidates() {
 		variables:{
 			"where": {
 				"candidate": {
-				  "interviewStatus": "ONGOING"
+				  "interviewStatus": "TOBEINTERVIEWED"
 				}
 			}
 		}
@@ -62,7 +62,7 @@ function Candidates() {
 				else{return 1}
 			})
 			.map(({candidate,interviewId},index)=>(
-				<CandidateCard
+				<CompletedCandidateCard
 					key={index}
 					id={interviewId}
 					name={candidate?.name}
