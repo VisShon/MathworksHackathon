@@ -2,7 +2,7 @@ import AutoScheduleButton from "./AutoScheduleButton"
 import ScheduleButton from "./ScheduleButton"
 
 
-function AdminManagerToolbar({selectedManager,selectedCandidate,selectedSlot}){
+function AdminManagerToolbar({selectedManager,selectedCandidate,selectedSlot,interviewersDataAuto,candidatesDataAuto }){
   return (
     <div className="flex gap-10 w-[85%] items-center">
         <AutoScheduleButton
@@ -12,6 +12,8 @@ function AdminManagerToolbar({selectedManager,selectedCandidate,selectedSlot}){
             managerId={selectedManager}
             candidateId={selectedCandidate}
             slot={selectedSlot}
+            interviewersDataAutoButton = {interviewersDataAuto}
+            candidatesDataAutoButton = {candidatesDataAuto}
         />
     </div>
   )

@@ -93,6 +93,8 @@ function admin() {
 					selectedCandidate={selectedCandidate}
 					selectedManager={selectedManager}
 					selectedSlot={selectedSlot}
+					interviewersData = {interviewersData}
+					candidatesData = {candidatesData}
 				/>
 			</div>
 		</div>
