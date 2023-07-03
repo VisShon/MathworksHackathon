@@ -78,7 +78,8 @@ function admin() {
 				</div>
 				<div className='w-full h-[43vh] rounded-2xl flex flex-col gap-7 overflow-y-scroll'>
 					{selectedManager&&
-						candidates?.map((candidate,index)=>(
+						candidates?.filter(candidate=>candidate.interviewStatus=='TOBEINTERVIEWED')
+						.map((candidate,index)=>(
 							<CandidateSlot
 								id={candidate.candidateId}
 								name={candidate.name}

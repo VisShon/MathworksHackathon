@@ -3,6 +3,7 @@ query GetInterviewers{
     interviewerId
     image
     role
+    skillset
     status
     userName
   }

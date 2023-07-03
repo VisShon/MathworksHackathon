@@ -15,6 +15,9 @@ function ScheduleButton({managerId,candidateId,slot}) {
 				"where": {
                     "candidateId": candidateId
                   },
+          "update": {
+                    "interviewStatus": "ONGOING"
+                },
                   "create": {
                     "interviewList": [
                       {

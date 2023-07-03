@@ -1,5 +1,5 @@
-mutation UpdateCandidateInterview($where: CandidateWhere, $create: CandidateRelationInput) {
-  updateCandidates(where: $where, create: $create) {
+mutation UpdateCandidateInterview($where: CandidateWhere, $create: CandidateRelationInput,  $update: CandidateUpdateInput) {
+  updateCandidates(where: $where, create: $create, update: $update){
     candidates {
       name
       candidateId

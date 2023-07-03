@@ -6,6 +6,7 @@ query getCandidates($where: CandidateWhere) {
     email
     degree
     name
+    interviewStatus
     skillset
     telegramId
     track
