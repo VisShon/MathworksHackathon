@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react"
 import { useMutation } from "@apollo/client"
 import nProgress from 'nprogress'
-import AddFeedback from '@/apollo/mutation/AddFeedback.graphql'
+import AddFeedback from '@/apollo/mutation/addFeedback.graphql'
+import UpdateCandidateStatus from '@/apollo/mutation/updateCandidateStatus.graphql'
+import { useRouter } from "next/router"
 
 function FeedbackForm({id}) {
 
-	const [addFeedback,{error,loading,data}] = useMutation(AddFeedback);
+	const [addFeedback,{error:feedbackError,loading:feedbackLoading,data:feedbackData}] = useMutation(AddFeedback);
+	const [updateInterviewStatus,{error:statusError,loading:statusLoading,data:statusData}] = useMutation(UpdateCandidateStatus);
+
+	const router = useRouter()
 	const [feedback,setFeedback] = useState("")
 	const [remark,setRemark] = useState("")
 	const [params,setParams] = useState([
@@ -50,22 +55,40 @@ function FeedbackForm({id}) {
 	const handleStatusUpdate = async () =>{
 		await updateInterviewStatus({
 			variables:{
+				"where": {
+				  "interviewId": id
+				},
+				"update": {
+				  "candidate": {
+					"update": {
+					  "node": {
+						"interviewStatus": "TOBEINTERVIEWED"
+					  }
+					}
+				  }
+				}
 			}
 		})
 	}
 
 	useEffect(() => {
-		if(loading){
+		if(feedbackLoading||statusLoading){
 			nProgress.start()
 		}
-		if(!loading&&data){
+		if((!feedbackLoading&&feedbackData)||(!statusLoading&&statusData)){
 			alert('success')
 			nProgress.done(false)
 		}
-		if(error){
+		if(feedbackError||statusError){
 			nProgress.done(false)
 		}
-	},[loading])
+	},[feedbackLoading,statusLoading])
+
+	useEffect(() => {
+		if(statusData&&!statusLoading){
+			router.push('/candidates')
+		}
+	},[statusData])
 
 	return (
 		<main className="flex gap-10 bg-secondary w-full h-full rounded-2xl p-10 text-[black]">

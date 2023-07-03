@@ -1,8 +1,7 @@
 import Image from 'next/image'
 import CandidateStats from './CandidateStats'
 
-function ManagerInfoPanel({image, name, role, skills, candidates}) {
-	const completed = 1
+function ManagerInfoPanel({image, name, role, skills, candidates,completed}) {
 	return (
 		<div className="flex flex-col w-full sticky top-10">
 			<div className='bg-main rounded-xl flex flex-col w-full h-full mb-4 p-10 text-center items-center justify-between  overflow-y-scroll'>

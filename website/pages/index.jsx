@@ -49,13 +49,15 @@ export default function Home({id}) {
 			</Head>
 
 			<div className='flex w-full p-10'>
-				<div className='flex flex-col w-[30%] px-10 relative'>
+				<div className='flex flex-col w-[30%] px-8 relative'>
 					<ManagerInfoPanel
 						image={managerData?.image} 
 						name={managerData?.userName} 
 						role={managerData?.role}
 						skills={managerData?.skillset}
 						candidates={managerData?.interviewList.length}
+						completed={managerData?.interviewList
+						.filter(item=>item.candidate.interviewStatus=='TOBEINTERVIEWED').length}
 					/>
 				</div>
 
@@ -63,8 +65,8 @@ export default function Home({id}) {
 					{managerData?.interviewList?.map(({candidate,timeStart,timeEnd,interviewId},index)=>{
 						const startTime = new Date(timeStart);
 						const endTime = new Date(timeEnd);
-						const startTimeFormatted = startTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-						const endTimeFormatted = endTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+						const startTimeFormatted = startTime.toLocaleString('en-GB', { timeZone: 'UTC' });
+						const endTimeFormatted = endTime.toLocaleString('en-GB', { timeZone: 'UTC' });
 						return (
 						<Timings
 							key={index}
@@ -73,6 +75,7 @@ export default function Home({id}) {
 							college={candidate.college}
 							degree={candidate.degree}
 							role={candidate.track}
+							status={candidate.interviewStatus}
 							timings={[startTimeFormatted,endTimeFormatted]}
 						/>)
 					})}

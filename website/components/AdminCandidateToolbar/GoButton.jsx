@@ -2,27 +2,37 @@ import { useMutation } from "@apollo/client"
 import nProgress from "nprogress"
 import { useEffect } from "react"
 import UpdateCandidateStatus from "@/apollo/mutation/updateCandidateStatus.graphql"
+import { useRouter } from "next/router";
 
 function GoButton({id,track}) {
     const [updateCandidateStatus,{error,loading,data}] = useMutation(UpdateCandidateStatus);	
+	const router = useRouter()
 
 	const candidatePass = async () =>{
-        
-        const newStatus = track=='HR'?"SELECTED":"WAITING"
+		let newStatus
+
+		if(track=='TECHNICAL'){
+			newStatus='TOBEINTERVIEWED'
+		}
+		if(track=='HR'){
+			newStatus='SELECTED'
+		}
+
 		await updateCandidateStatus({
 			variables:{
-                "where": {
-                    "interviewId": id
-                  },
-                  "update": {
-                    "candidate": {
-                      "update": {
-                        "node": {
-                          "interviewStatus":newStatus 
-                        }
-                      }
-                    }
-                }
+				"where": {
+				  "interviewId": id
+				},
+				"update": {
+				  "candidate": {
+					"update": {
+					  "node": {
+						"track": "HR",
+						"interviewStatus": newStatus
+					  }
+					}
+				  }
+				}
 			}
 		})
 	}
@@ -34,6 +44,7 @@ function GoButton({id,track}) {
 		if(!loading&&data){
 			alert('success')
 			nProgress.done(false)
+			router.push('/admin/completed')
 		}
 		if(error){
 			nProgress.done(false)

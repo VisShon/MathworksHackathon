@@ -14,5 +14,14 @@ query getInterview($where: InterviewWhere) {
     }
     description
     releventLinks
+    feedback {
+      confidence
+      feedbackDescription
+      feedbackResponse
+      problemSolving
+      spokenSkills
+      teamwork
+      technicalSkills
+    }
   }
 }
