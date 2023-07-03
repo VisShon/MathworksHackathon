@@ -21,7 +21,7 @@ function CandidateProfile() {
 		}
 	})
 
-	// console.log(data,error)
+	console.log(data,error)
 	
 	useEffect(() => {
 		if(loading){
@@ -37,7 +37,7 @@ function CandidateProfile() {
 	},[loading])
 
 	return (
-		<main className="flex gap-10 w-screen h-screen p-20 mt-10 justify-between items-top overflow-hidden">
+		<main className="flex gap-10 w-screen h-[80%] p-10  justify-between items-top overflow-hidden">
 			<CandidateInfoPanel
 				id={candidateData?.candidate?.candidateId} 
 				image={candidateData?.candidate?.image} 
@@ -50,7 +50,7 @@ function CandidateProfile() {
 
 			<div className="flex flex-col gap-10 w-[70%]">
 				<FeedbackResult
-					feedback={candidateData?.feedback}
+					feedback={candidateData?.feedback[0]}
 				/>
                 <AdminToolbar
 					id={candidateData?.interviewId}
