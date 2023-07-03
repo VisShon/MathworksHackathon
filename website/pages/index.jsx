@@ -87,7 +87,7 @@ export async function getServerSideProps({req,res}){
 	console.log(decode(token))
 	return {
 		props:{
-			id:decode(token).id
+			id:token?decode(token)?.id:''
 		}
 	}
 }

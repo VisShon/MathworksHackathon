@@ -64,5 +64,5 @@ export async function decode(token) {
 }
 
 export const config = {
-	matcher: ['/','/interview/:id*','/candidates/:id*','/login', '/compile', '/admin'],
+	matcher: ['/','/interview/:id*','/candidates/:id*','/login', '/compile', '/admin', '/admin/completed'],
 }
