@@ -6,5 +6,19 @@ query GetInterviewer($where: InterviewerWhere) {
     skillset
     status
     userName
+    interviewList {
+      interviewId
+      candidate {
+        track
+        name
+        email
+        degree
+        college
+        cgpa
+        candidateId
+      }
+      timeEnd
+      timeStart
+    }
   }
 }

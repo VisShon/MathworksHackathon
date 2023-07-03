@@ -16,6 +16,7 @@ function Navbar() {
 	return (
 		route!=='/login'&&
 		<div  className='w-full flex justify-center relative my-10'>
+			{!route.startsWith('/admin')?
 			<nav className="flex w-[50%] p-2 rounded-xl items-center justify-between font-[400] text-[#6f1f6b] px-10  z-50 overflow-x-hidden bg-main">
 				<Link 
 					href={'/'} 
@@ -48,7 +49,7 @@ function Navbar() {
 				</div>
 
 
-				<Link href={'/profile'} className=" flex flex-col relative">
+				<Link href={'/'} className=" flex flex-col relative">
 					<Image 
 						className='rounded-full'
 						src={image?image:'/profile.svg'} 
@@ -57,7 +58,44 @@ function Navbar() {
 						alt={'Vantage'} 
 					/>
 				</Link>
-			</nav>
+			</nav>:
+			<nav className="flex w-[50%] p-2 rounded-xl items-center justify-between font-[400] text-[#6f1f6b] px-10  z-50 overflow-x-hidden bg-main">
+				<Link 
+					href={'/admin'} 
+					className="flex flex-col">
+					<Image
+						src={'/logo.svg'}
+						width={40}
+						height={40}
+						alt={'Vantage'}
+					/>
+				</Link>
+
+
+				<div className=" flex gap-10">
+					<Link 
+						style={route==='/admin'?{color:"#FFFFFF"}:{color:"#9EC2DB"}} 
+						href={'/'}>
+						Dashboard
+					</Link>
+					<Link 
+						style={route==='/admin/completed'?{color:"#FFFFFF"}:{color:"#9EC2DB"}} 
+						href={'/admin/completed'}>
+						Candidates
+					</Link>
+				</div>
+
+
+				<Link href={'/admin'} className=" flex flex-col relative">
+					<Image 
+						className='rounded-full'
+						src={image?image:'/profile.svg'} 
+						width={40} 
+						height={40} 
+						alt={'Vantage'} 
+					/>
+				</Link>
+			</nav>}
 		</div>
 	)
 }

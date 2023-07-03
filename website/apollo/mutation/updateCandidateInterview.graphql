@@ -1,0 +1,8 @@
+mutation UpdateCandidateInterview($where: CandidateWhere, $create: CandidateRelationInput) {
+  updateCandidates(where: $where, create: $create) {
+    candidates {
+      name
+      candidateId
+    }
+  }
+}

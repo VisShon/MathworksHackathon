@@ -112,7 +112,7 @@ export const logIn = async(args) =>{
 			const token = jwt.sign(
 				{
 					...interviewer[0],
-					id:interviewer[0]?.id
+					id:interviewer[0]?.interviewerId
 				},
 				process.env.JWT_KEY,
 				{

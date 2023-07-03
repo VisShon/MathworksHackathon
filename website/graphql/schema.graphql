@@ -26,6 +26,8 @@ type Interview {
   admin: String @writeonly
   description: String
   releventLinks: [String]
+
+  feedback: Feedback @relationship(type: "Interview", direction: IN)
   interviewer: Interviewer @relationship(type: "Interview", direction: IN)
   candidate: Candidate! @relationship(type: "Interview", direction: IN)
 }
@@ -53,7 +55,7 @@ type Feedback {
   teamwork: Boolean!
   feedbackResponse: String!
   feedbackDescription: String
-  interview: Interview! @relationship(type: "Interview", direction: IN)
+  interviewList: [Interview!]! @relationship(type: "Interview", direction: OUT)
 }
 
 extend type Interviewer 
@@ -74,9 +76,7 @@ extend type Interview
 	@auth(
 	rules:[{
 		operations: [DELETE,UPDATE,CONNECT,DISCONNECT]
-		allow: {
-			admin:"$jwt.id"
-		}
+		allow: { OR: [{ amdin: "$jwt.id" }, { interviewer: { interviewerId: "$jwt.id" } }] }
 	},
 	{
 		operations: [CREATE]

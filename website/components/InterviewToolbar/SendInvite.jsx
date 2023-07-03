@@ -1,9 +1,19 @@
 import Image from "next/image"
+import { send } from "@emailjs/browser"
 
-function SendInvite(phone) {
+function SendInvite({mail,name,links}) {
 
-	const inviteCandidate = () => {
-		//setup teams invite
+	const inviteCandidate = async() => {
+		await send(
+			'service_7uivqsf',
+			'template_ymw1xhk',
+			{
+				to_name: name,
+				to_email: mail,
+				invite_link:links
+			},
+			'6HGQvyzipY4qgGkWm'
+		)
 	}
 
 	return (

@@ -1,36 +1,44 @@
 import { useMutation } from "@apollo/client"
 import nProgress from "nprogress"
 import { useEffect } from "react"
+import UpdateCandidateStatus from "@/apollo/mutation/updateCandidateStatus.graphql"
 
-function GoButton() {
-    
-		// const [addFeedback,{error,loading,data}] = useMutation(AddFeedback);
-        const candidatePass = async () =>{
-            // await addFeedback({
-            // 	variables:{
-            // 		input: [
-            // 		  {}
-            // 		]
-            // 	}
-            // })
-        }
-    
-        // useEffect(() => {
-        // 	if(loading){
-        // 		nProgress.start()
-        // 	}
-        // 	if(!loading){
-        // 		nProgress.done(false)
-        // 		if(data)
-        // 			router.push(`/event/${data.createEvents.events[0].id}`)
-        // 		if(error)
-        // 			alert(error)
-        // 	}
-            
-        // 	if(error){
-        // 		nProgress.done(false)
-        // 	}
-        // },[loading])
+function GoButton({id,track}) {
+    const [updateCandidateStatus,{error,loading,data}] = useMutation(UpdateCandidateStatus);	
+
+	const candidatePass = async () =>{
+        
+        const newStatus = track=='HR'?"SELECTED":"WAITING"
+		await updateCandidateStatus({
+			variables:{
+                "where": {
+                    "interviewId": id
+                  },
+                  "update": {
+                    "candidate": {
+                      "update": {
+                        "node": {
+                          "interviewStatus":newStatus 
+                        }
+                      }
+                    }
+                }
+			}
+		})
+	}
+
+	useEffect(() => {
+		if(loading){
+			nProgress.start()
+		}
+		if(!loading&&data){
+			alert('success')
+			nProgress.done(false)
+		}
+		if(error){
+			nProgress.done(false)
+		}
+	},[loading])
 
 	return (
 		<button 

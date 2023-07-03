@@ -1,36 +1,66 @@
 import { useMutation } from "@apollo/client"
 import nProgress from "nprogress"
 import { useEffect } from "react"
+import UpdateCandidateInterview from '@/apollo/mutation/updateCandidateInterview.graphql'
+import slotsData from '@/slots.json'
 
-function ScheduleButton() {
+function ScheduleButton({managerId,candidateId,slot}) {
     
-		// const [addFeedback,{error,loading,data}] = useMutation(AddFeedback);
-        const candidateSchedule = async () =>{
-            // await addFeedback({
-            // 	variables:{
-            // 		input: [
-            // 		  {}
-            // 		]
-            // 	}
-            // })
-        }
-    
-        // useEffect(() => {
-        // 	if(loading){
-        // 		nProgress.start()
-        // 	}
-        // 	if(!loading){
-        // 		nProgress.done(false)
-        // 		if(data)
-        // 			router.push(`/event/${data.createEvents.events[0].id}`)
-        // 		if(error)
-        // 			alert(error)
-        // 	}
-            
-        // 	if(error){
-        // 		nProgress.done(false)
-        // 	}
-        // },[loading])
+    const [updateCandidateInterview,{error,loading,data}] = useMutation(UpdateCandidateInterview);
+    const freeSlot = slotsData[slot-1]
+
+    const candidateSchedule = async () =>{
+		await updateCandidateInterview({
+			variables:{
+				"where": {
+                    "candidateId": candidateId
+                  },
+                  "create": {
+                    "interviewList": [
+                      {
+                        "node": {
+                          "admin": process.env.ADMIN_ID,
+                          "candidate": {
+                            "connect": {
+                              "where": {
+                                "node": {
+                                  "candidateId": candidateId
+                                }
+                              }
+                            }
+                          },
+                          "interviewer": {
+                            "connect": {
+                              "where": {
+                                "node": {
+                                  "interviewerId": managerId
+                                }
+                              }
+                            }
+                          },
+                          "releventLinks": 'link',
+                          "timeEnd": new Date(freeSlot.timestart),
+                          "timeStart": new Date(freeSlot.timeend)
+                        }
+                      }
+                    ]
+                }
+			}
+		})
+	}
+
+	useEffect(() => {
+		if(loading){
+			nProgress.start()
+		}
+		if(!loading&&data){
+			alert('success')
+			nProgress.done(false)
+		}
+		if(error){
+			nProgress.done(false)
+		}
+	},[loading])
 
 	return (
 		<button 

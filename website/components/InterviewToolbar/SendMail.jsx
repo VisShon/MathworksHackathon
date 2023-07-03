@@ -1,15 +1,11 @@
 import Image from "next/image"
 
-function SendMail(mail) {
-
-	const mailCandidate = () =>{
-		//mail candidate
-	}
+function SendMail({mail}) {
 
 	return(
-		<button 
+		<a 
 			className="hover:shadow-md active:opacity-80 flex flex-col bg-secondary rounded-xl p-4 px-10 text-[red] justify-center items-center w-[35%] h-full"
-			onClick={mailCandidate}>
+			href={`mailto:${mail}`}>
 			<Image
 				alt='mail'
 				src={'/Mail.svg'}
@@ -18,7 +14,7 @@ function SendMail(mail) {
 				className='w-[2rem] '
 			/>
 			<p>Send Mail</p>
-		</button>
+		</a>
 	)
 }
 

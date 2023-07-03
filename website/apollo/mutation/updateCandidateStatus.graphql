@@ -1,7 +1,9 @@
-mutation Mutation($where: CandidateWhere, $update: CandidateUpdateInput) {
-  updateCandidates(where: $where, update: $update) {
-    candidates {
-      interviewStatus
+mutation UpdateCandidateStatus($where: InterviewWhere, $update: InterviewUpdateInput) {
+  updateInterviews(where: $where, update: $update) {
+    interviews {
+      candidate {
+        interviewStatus
+      }
     }
   }
 }

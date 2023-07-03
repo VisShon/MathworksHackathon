@@ -1,104 +1,38 @@
 import Search from "@/components/Search"
 import CandidateCard from "@/components/CandidateCard"
-
+import GetInterviewer from '@/apollo/query/getInterviewer.graphql'
+import nProgress from "nprogress"
+import { decode } from "jsonwebtoken"
 import { useState,useEffect } from "react"
 import { useQuery } from "@apollo/client"
-import nProgress from "nprogress"
-import Navbar from "@/components/Navbar"
 
-function Candidates() {
+function Candidates({id}) {
 
 	const [sort,setSort] = useState(false)
+	const [candidates, setCandidates] = useState()
 	const [searchParam,setSearchParam] = useState([])
-	const [candidates, setCandidates] = useState(
-		[
-			{
-				id:'vishnu',
-				name:'Vishnu Shon',
-				branch:'Computer Science and Design',
-				role:'Developer',
-				college:'IIITD',
-				description:'Lorem ipsum dolor sit amet consectetur. Elit arcu odio odio lorem. Interdum quam nec hac tristique ultrices morbi ut viverra. Proin etiam arcu varius facilisi.'
-			},
-			{
-				id:'vishnu',
-				name:'Vishnu Shon',
-				branch:'Computer Science and Design',
-				role:'Manager',
-				college:'IIITD',
-				description:'Lorem ipsum dolor sit amet consectetur. Elit arcu odio odio lorem. Interdum quam nec hac tristique ultrices morbi ut viverra. Proin etiam arcu varius facilisi.'
-			},
-			{
-				id:'vishnu',
-				name:'Vishnu Shon',
-				branch:'Computer Science and Design',
-				role:'Manager',
-				college:'IIITD',
-				description:'Lorem ipsum dolor sit amet consectetur. Elit arcu odio odio lorem. Interdum quam nec hac tristique ultrices morbi ut viverra. Proin etiam arcu varius facilisi.'
-			},
-			{
-				id:'vishnu',
-				name:'Vishnu Shon',
-				branch:'Computer Science and Design',
-				role:'Manager',
-				college:'IIITD',
-				description:'Lorem ipsum dolor sit amet consectetur. Elit arcu odio odio lorem. Interdum quam nec hac tristique ultrices morbi ut viverra. Proin etiam arcu varius facilisi.'
-			},
-			{
-				id:'vishnu',
-				name:'Vishnu Shon',
-				branch:'Computer Science and Design',
-				role:'Manager',
-				college:'IIITD',
-				description:'Lorem ipsum dolor sit amet consectetur. Elit arcu odio odio lorem. Interdum quam nec hac tristique ultrices morbi ut viverra. Proin etiam arcu varius facilisi.'
-			},
-			{
-				id:'vishnu',
-				name:'Vishnu Shon',
-				branch:'Computer Science and Design',
-				role:'Manager',
-				college:'IIITD',
-				description:'Lorem ipsum dolor sit amet consectetur. Elit arcu odio odio lorem. Interdum quam nec hac tristique ultrices morbi ut viverra. Proin etiam arcu varius facilisi.'
-			},
+	const { loading, error, data } = useQuery(GetInterviewer,{
+		variables:{
+			where: {
+			  interviewerId: id
+			}
+		}
+	})
 
-			{
-				id:'vishnu',
-				name:'Vishnu Shon',
-				branch:'Computer Science and Design',
-				role:'Manager',
-				college:'IIITD',
-				description:'Lorem ipsum dolor sit amet consectetur. Elit arcu odio odio lorem. Interdum quam nec hac tristique ultrices morbi ut viverra. Proin etiam arcu varius facilisi.'
-			},
-			{
-				id:'vishnu',
-				name:'Vishnu Shon',
-				branch:'Computer Science and Design',
-				role:'Manager',
-				college:'IIITD',
-				description:'Lorem ipsum dolor sit amet consectetur. Elit arcu odio odio lorem. Interdum quam nec hac tristique ultrices morbi ut viverra. Proin etiam arcu varius facilisi.'
-			},
-		]
-	)
+	useEffect(() => {
+		if(loading){
+			nProgress.start()
+		}
+		if(!loading){
+			nProgress.done(false)
+			setCandidates(data?.interviewers[0].interviewList)
+		}
+		if(error){
+			nProgress.done(false)
+		}
+	},[loading])
 
-	// const { loading, error, data } = useQuery(GetEventAttend,{
-	// 	variables:{
-	// 		where:{
-	// 		}
-	// 	}
-	// })
-	
-	// useEffect(() => {
-	// 	if(loading){
-	// 		nProgress.start()
-	// 	}
-	// 	if(!loading){
-	// 		nProgress.done(false)
-	// 		setEventData(data?.events[0])
-	// 	}
-	// 	if(error){
-	// 		nProgress.done(false)
-	// 	}
-	// },[loading])
+	console.log(data)
 
 	return (
 		<main className="w-screen h-auto relative justify-center items-center flex flex-col p-10">
@@ -114,20 +48,20 @@ function Candidates() {
 				/>
 			</div>
 
-			{candidates.filter(item=>
+			{candidates?.filter((item)=>
 			(searchParam==''?true:
 			item?.name?.toLowerCase().includes(searchParam)||
 			item?.role?.toLowerCase().includes(searchParam)||
 			item?.college?.toLowerCase().includes(searchParam)||
 			item?.branch?.toLowerCase().includes(searchParam)))
-			.map(({name,college,role,description,id},index)=>(
+			.map(({candidate,interviewId},index)=>(
 				<CandidateCard
 					key={index}
-					id={id}
-					name={name}
-					college={college}
-					role={role}
-					description={description}
+					id={interviewId}
+					name={candidate?.name}
+					college={candidate?.college}
+					role={candidate?.track}
+					description={'Lorem ipsum dolor sit amet consectetur. Lacus rutrum egestas sollicitudin viverra faucibus vitae. Vitae mi pellentesque sed nulla tortor ac placerat. Non non vitae auctor semper tristique ipsum blandit sapien.'}
 				/>
 			))}
 		</main>
@@ -135,3 +69,13 @@ function Candidates() {
 }
 
 export default Candidates
+
+export async function getServerSideProps({req,res}){
+	const token = req.cookies.token
+	console.log(decode(token))
+	return {
+		props:{
+			id:decode(token).id
+		}
+	}
+}

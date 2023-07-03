@@ -1,18 +1,18 @@
 import Head from 'next/head'
 import Timings from '@/components/Timings'
 import ManagerInfoPanel from '@/components/ManagerInfoPanel'
-
 import GetInterviewer from '@/apollo/query/getInterviewer.graphql'
+import nProgress from 'nprogress'
+import { decode } from 'jsonwebtoken'
 import { useState, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
-import nProgress from 'nprogress'
 
-export default function Home() {
+export default function Home({id}) {
 	const [managerData, setManagerData] = useState()
 	const { loading, error, data } = useQuery(GetInterviewer,{
 		variables:{
 			where: {
-			  interviewerId: "5183141a-2884-4726-8ff1-39faec665f7c"
+			  interviewerId: id
 			}
 		}
 	})
@@ -30,6 +30,8 @@ export default function Home() {
 			nProgress.done(false)
 		}
 	},[loading])
+
+	console.log(data)
 
 	return (
 		<main>
@@ -53,22 +55,39 @@ export default function Home() {
 						name={managerData?.userName} 
 						role={managerData?.role}
 						skills={managerData?.skillset}
+						candidates={managerData?.interviewList.length}
 					/>
 				</div>
 
 				<div className='flex flex-col w-[70%]'>
-					{managerData?.timings?.map(({name,college,role,start,end,id},index)=>(
+					{managerData?.interviewList?.map(({candidate,timeStart,timeEnd,interviewId},index)=>{
+						const startTime = new Date(timeStart);
+						const endTime = new Date(timeEnd);
+						const startTimeFormatted = startTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+						const endTimeFormatted = endTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+						return (
 						<Timings
 							key={index}
-							id={id}
-							name={name}
-							college={college}
-							role={role}
-							timings={[start,end]}
-						/>
-					))}
+							id={interviewId}
+							name={candidate.name}
+							college={candidate.college}
+							degree={candidate.degree}
+							role={candidate.track}
+							timings={[startTimeFormatted,endTimeFormatted]}
+						/>)
+					})}
 				</div>
 			</div>
 		</main>
 	)
+}
+
+export async function getServerSideProps({req,res}){
+	const token = req.cookies.token
+	console.log(decode(token))
+	return {
+		props:{
+			id:decode(token).id
+		}
+	}
 }
