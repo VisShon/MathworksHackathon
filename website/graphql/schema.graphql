@@ -27,7 +27,7 @@ type Interview {
   description: String
   releventLinks: [String]
 
-  feedback: Feedback @relationship(type: "Interview", direction: IN)
+  feedback: [Feedback!]! @relationship(type: "Interview", direction: IN)
   interviewer: Interviewer @relationship(type: "Interview", direction: IN)
   candidate: Candidate! @relationship(type: "Interview", direction: IN)
 }
@@ -75,8 +75,8 @@ extend type Interviewer
 extend type Interview
 	@auth(
 	rules:[{
-		operations: [DELETE,UPDATE,CONNECT,DISCONNECT]
-		allow: { OR: [{ amdin: "$jwt.id" }, { interviewer: { interviewerId: "$jwt.id" } }] }
+		operations: [DELETE,CONNECT,DISCONNECT]
+		allow: { OR: [{ amdin: "$jwt.id" }, { interviewer: { interviewerId: "$jwt.id" }} ] }
 	},
 	{
 		operations: [CREATE]
@@ -88,9 +88,7 @@ extend type Candidate
 	@auth(
 	rules:[{
 		operations: [DELETE,UPDATE,CONNECT,DISCONNECT]
-		allow: {
-			admin:"$jwt.id"
-		}
+		allow: { OR: [{ amdin: "$jwt.id" }, { interviewer: { interviewerId: "$jwt.id" }} ] }
 	},
 	{
 		operations: [CREATE]
