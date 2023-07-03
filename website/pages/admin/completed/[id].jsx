@@ -12,6 +12,7 @@ function CandidateProfile() {
 	const {id} = router.query;
 
 	const [candidateData, setCandidateData] = useState({})
+	const [feedback, setFeedback] = useState([])
 
 	const { loading, error, data } = useQuery(GetInterview,{
 		variables:{
@@ -30,6 +31,7 @@ function CandidateProfile() {
 		if(!loading){
 			nProgress.done(false)
 			setCandidateData(data?.interviews[0])
+			setFeedback(data?.interviews[0]?.feedback[0])
 		}
 		if(error){
 			nProgress.done(false)
@@ -50,10 +52,10 @@ function CandidateProfile() {
 
 			<div className="flex flex-col gap-10 w-[70%]">
 				<FeedbackResult
-					feedback={candidateData?.feedback[0]}
+					feedback={feedback}
 				/>
                 <AdminToolbar
-					id={candidateData?.interviewId}
+					id={id}
 					track={candidateData?.candidate?.track}
                 />
 			</div>
