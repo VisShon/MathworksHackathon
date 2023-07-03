@@ -43,7 +43,7 @@ function Navbar() {
 					</Link>
 					<Link 
 						style={route==='/compile'?{color:"#FFFFFF"}:{color:"#9EC2DB"}} 
-						href={'/compile'}>
+						href={'https://grader.mathworks.com/courses/112968-interview-test/assignments/309028-coding-problems'}>
 						Compile
 					</Link>
 				</div>

@@ -49,7 +49,7 @@ export default function Home({id}) {
 			</Head>
 
 			<div className='flex w-full p-10'>
-				<div className='flex flex-col w-[30%] px-10 relative'>
+				<div className='flex flex-col w-[30%] px-8 relative'>
 					<ManagerInfoPanel
 						image={managerData?.image} 
 						name={managerData?.userName} 
