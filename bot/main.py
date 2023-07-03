@@ -9,6 +9,9 @@ Token = "6170075131:AAFnsHpB4rlkvkD7fiMseSZsHhpg_ut181c"
 
 bot = telebot.TeleBot(Token)
 
+
+
+
 @bot.message_handler(["start"])
 def start(message):
     user_id = str(message.from_user.id)
@@ -23,11 +26,14 @@ def help(message):
     bot.reply_to(
         message,
         """
-    /start -> get started.
-    /help -> this particular message.
-    /facts -> get some facts about MathWorks.
-    /update -> get your next round schedule or previous round result.
-    """,
+        /start -> get started.
+        /help -> this particular message.
+        /facts -> get some facts about MathWorks.
+        /schedule -> get your interview timings.
+        /track -> view your selected track.
+        /interviewer -> get you interviewer's details.
+        /status -> get your interview status.
+        """,
     )
 
 
@@ -86,16 +92,65 @@ def info(message):
 #         if str(i["telegram_id"]) == user_id:
 #             bot.reply_to(message,"Start time : "+i["time_start"]+"\nEnd time : " +i["time_end"])
 
-@bot.message_handler(["update"])
-def get_update(message):
-    user_id = str(message.from_user.id)
 
-    with open(r'InterviewLink\bot\mw_data.csv', 'r', encoding='unicode_escape') as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            print(row)
-            if row['telegram_id'] == user_id:
-                bot.reply_to(message, f"Start time: {row['time_start']}\nEnd time: {row['time_end']}")
-                break
-    
+
+# @bot.message_handler(["update"])
+# def get_update(message):
+#     user_id = str(message.from_user.id)
+
+#     with open(r'InterviewLink\bot\mw_data.csv', 'r', encoding='unicode_escape') as file:
+#         reader = csv.DictReader(file)
+#         for row in reader:
+#             print(row)
+#             if row['telegram_id'] == user_id:
+#                 bot.reply_to(message, f"Start time: {row['time_start']}\nEnd time: {row['time_end']}")
+#                 break
+
+@bot.message_handler(["track"])
+def get_track(message):
+    user_id = str(message.from_user.id)
+    # create the data object
+    # api_url = 'http://localhost:3000/api/botUpdate?telegram_id=1433866671'
+    # response = requests.get(api_url)
+    # data = response.json()
+    data = {"telegram_id":"6124708909","time_start":"10:06 PM","time_end":"10:06 PM","track":"Technical","interview_status":"TOBEINTERVIEWED","interviewer_userName":"Raghavendra Ravindranath","interviewer_email":"arp1tnand101@gmail.com"} 
+    data_dict = dict(data)
+    for key, value in data_dict.items():
+        if str(value) == user_id:
+            bot.reply_to(message, "Your selected track for the interview: " + data["track"])  
+
+
+@bot.message_handler(["status"])
+def get_status(message):
+    user_id = str(message.from_user.id)
+    # create the data object
+    data = {"telegram_id":"6124708909","time_start":"10:06 PM","time_end":"10:06 PM","track":"Technical","interview_status":"TOBEINTERVIEWED","interviewer_userName":"Raghavendra Ravindranath","interviewer_email":"arp1tnand101@gmail.com"} 
+    data_dict = dict(data)
+    for key, value in data_dict.items():
+        if str(value) == user_id:
+            bot.reply_to(message, "Your status: " + data["interview_status"]) 
+
+
+@bot.message_handler(["schedule"])
+def get_schedule(message):
+    user_id = str(message.from_user.id)
+    # create the data object
+    data = {"telegram_id":"6124708909","time_start":"10:06 PM","time_end":"10:06 PM","track":"Technical","interview_status":"TOBEINTERVIEWED","interviewer_userName":"Raghavendra Ravindranath","interviewer_email":"arp1tnand101@gmail.com"} 
+    data_dict = dict(data)
+    for key, value in data_dict.items():
+        if str(value) == user_id:
+            bot.reply_to(message, "Start time : "+data["time_start"]+"\nEnd time : " +data["time_end"]) 
+
+
+@bot.message_handler(["interviewer"])
+def get_interviewer_details(message):
+    user_id = str(message.from_user.id)
+    # create the data object
+    data = {"telegram_id":"6124708909","time_start":"10:06 PM","time_end":"10:06 PM","track":"Technical","interview_status":"TOBEINTERVIEWED","interviewer_userName":"Raghavendra Ravindranath","interviewer_email":"arp1tnand101@gmail.com"} 
+    data_dict = dict(data)
+    for key, value in data_dict.items():
+        if str(value) == user_id:
+            bot.reply_to(message, "Your Interviewer's name : "+data["interviewer_userName"]+"\nEMail id : " +data["interviewer_email"])          
+
+
 bot.polling()
