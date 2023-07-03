@@ -6,7 +6,7 @@ import { decode } from "jsonwebtoken"
 import { useState,useEffect } from "react"
 import { useQuery } from "@apollo/client"
 
-function Candidates({id}) {
+function Candidates() {
 
 	const [sort,setSort] = useState(false)
 	const [candidates, setCandidates] = useState()
@@ -15,7 +15,7 @@ function Candidates({id}) {
 		variables:{
 			"where": {
 				"candidate": {
-				  "interviewStatus": "WAITING"
+				  "interviewStatus": "ONGOING"
 				}
 			}
 		}
@@ -50,12 +50,17 @@ function Candidates({id}) {
 				/>
 			</div>
 
-			{candidates?.filter((item)=>
+			{candidates?.filter(({candidate})=>
 			(searchParam==''?true:
-			item?.name?.toLowerCase().includes(searchParam)||
-			item?.role?.toLowerCase().includes(searchParam)||
-			item?.college?.toLowerCase().includes(searchParam)||
-			item?.branch?.toLowerCase().includes(searchParam)))
+			candidate?.name?.toLowerCase().includes(searchParam)||
+			candidate?.interviewStatus?.toLowerCase().includes(searchParam)||
+			candidate?.track?.toLowerCase().includes(searchParam)||
+			candidate?.college?.toLowerCase().includes(searchParam)||
+			candidate?.degree?.toLowerCase().includes(searchParam)))
+			.sort((a,b)=>{
+				if(a?.candidate?.cgpa>b?.candidate?.cgpa&&sort){return -1}
+				else{return 1}
+			})
 			.map(({candidate,interviewId},index)=>(
 				<CandidateCard
 					key={index}

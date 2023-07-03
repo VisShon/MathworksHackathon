@@ -19,6 +19,8 @@ function Candidates({id}) {
 		}
 	})
 
+	console.log(searchParam)
+
 	useEffect(() => {
 		if(loading){
 			nProgress.start()
@@ -48,12 +50,17 @@ function Candidates({id}) {
 				/>
 			</div>
 
-			{candidates?.filter((item)=>
+			{candidates?.filter(({candidate})=>
 			(searchParam==''?true:
-			item?.name?.toLowerCase().includes(searchParam)||
-			item?.role?.toLowerCase().includes(searchParam)||
-			item?.college?.toLowerCase().includes(searchParam)||
-			item?.branch?.toLowerCase().includes(searchParam)))
+			candidate?.name?.toLowerCase().includes(searchParam)||
+			candidate?.interviewStatus?.toLowerCase().includes(searchParam)||
+			candidate?.track?.toLowerCase().includes(searchParam)||
+			candidate?.college?.toLowerCase().includes(searchParam)||
+			candidate?.degree?.toLowerCase().includes(searchParam)))
+			.sort((a,b)=>{
+				if(a?.candidate?.cgpa>b?.candidate?.cgpa&&sort){return -1}
+				else{return 1}
+			})
 			.map(({candidate,interviewId},index)=>(
 				<CandidateCard
 					key={index}
@@ -61,6 +68,7 @@ function Candidates({id}) {
 					name={candidate?.name}
 					college={candidate?.college}
 					role={candidate?.track}
+					status={candidate?.interviewStatus}
 					description={'Lorem ipsum dolor sit amet consectetur. Lacus rutrum egestas sollicitudin viverra faucibus vitae. Vitae mi pellentesque sed nulla tortor ac placerat. Non non vitae auctor semper tristique ipsum blandit sapien.'}
 				/>
 			))}

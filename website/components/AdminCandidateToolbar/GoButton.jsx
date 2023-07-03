@@ -8,7 +8,7 @@ function GoButton({id,track}) {
 
 	const candidatePass = async () =>{
         
-        const newStatus = track=='HR'?"SELECTED":"WAITING"
+        const newStatus = track=='HR'?"SELECTED":"ONGOING"
 		await updateCandidateStatus({
 			variables:{
                 "where": {

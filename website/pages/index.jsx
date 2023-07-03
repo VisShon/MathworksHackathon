@@ -56,6 +56,8 @@ export default function Home({id}) {
 						role={managerData?.role}
 						skills={managerData?.skillset}
 						candidates={managerData?.interviewList.length}
+						completed={managerData?.interviewList
+						.filter(item=>item.candidate.interviewStatus=='TOBEINTERVIEWED').length}
 					/>
 				</div>
 
@@ -73,6 +75,7 @@ export default function Home({id}) {
 							college={candidate.college}
 							degree={candidate.degree}
 							role={candidate.track}
+							status={candidate.interviewStatus}
 							timings={[startTimeFormatted,endTimeFormatted]}
 						/>)
 					})}
