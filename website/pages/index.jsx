@@ -65,8 +65,8 @@ export default function Home({id}) {
 					{managerData?.interviewList?.map(({candidate,timeStart,timeEnd,interviewId},index)=>{
 						const startTime = new Date(timeStart);
 						const endTime = new Date(timeEnd);
-						const startTimeFormatted = startTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-						const endTimeFormatted = endTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+						const startTimeFormatted = startTime.toLocaleString('en-GB', { timeZone: 'UTC' });
+						const endTimeFormatted = endTime.toLocaleString('en-GB', { timeZone: 'UTC' });
 						return (
 						<Timings
 							key={index}
