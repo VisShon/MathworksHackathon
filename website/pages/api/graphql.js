@@ -127,6 +127,52 @@ export const logIn = async(args) =>{
 	return 'USER_NOT_EXISTS'
 }
 
+export const botController = async(args) =>{
+	await ogm.init()
+	const Interview = ogm.model('Interview')
+
+	const selectionSet = `{
+		timeStart,
+		timeEnd,
+		interviewer{
+			userName,
+			email
+		},
+		candidate{
+			track,
+			interviewStatus
+		}
+	}`
+
+	const interview = await Interview.find({
+		where:{
+			candidate:{
+				telegramId:args.telegram_id
+			}
+		},
+		selectionSet
+	}) 
+
+
+	if(interview.length!==0){
+		const startTime = new Date(interview[0].timeStart);
+		const endTime = new Date(interview[0].timeEnd);
+		const startTimeFormatted = startTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+		const endTimeFormatted = endTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+		return {
+			telegram_id: args.telegram_id,
+			time_start:startTimeFormatted,
+			time_end: endTimeFormatted,
+			track: interview[0].candidate.track,
+			interview_status: interview[0].candidate.interviewStatus,
+			interviewer_userName: interview[0].interviewer.userName,
+			interviewer_email: interview[0].interviewer.email
+		}
+	}
+
+	return 'USER_NOT_EXISTS'
+}
+
 export default startServerAndCreateNextHandler(apolloServer,{
 	context: async (req) => {
 		const token = req.cookies.token;
