@@ -76,7 +76,7 @@ extend type Interview
 	@auth(
 	rules:[{
 		operations: [DELETE,CONNECT,DISCONNECT]
-		allow: { OR: [{ amdin: "$jwt.id" }, { interviewer: { interviewerId: "$jwt.id" }} ] }
+		allow: { OR: [{ admin: "$jwt.id" }, { interviewer: { interviewerId: "$jwt.id" }} ] }
 	},
 	{
 		operations: [CREATE]
@@ -88,7 +88,7 @@ extend type Candidate
 	@auth(
 	rules:[{
 		operations: [DELETE,UPDATE,CONNECT,DISCONNECT]
-		allow: { OR: [{ amdin: "$jwt.id" }, { interviewer: { interviewerId: "$jwt.id" }} ] }
+		allow: { OR: [{ admin: "$jwt.id" }, { interviewer: { interviewerId: "$jwt.id" }} ] }
 	},
 	{
 		operations: [CREATE]

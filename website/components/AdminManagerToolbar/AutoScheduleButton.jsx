@@ -5,77 +5,78 @@ import UpdateCandidateInterview from '@/apollo/mutation/updateCandidateInterview
 import { AutoSchedule } from "@/utils/schedule"
 
 function AutoScheduleButton({candidatesData, interviewersData}) {
-        const [updateCandidateInterview, {error, loading, data}]  = useMutation(UpdateCandidateInterview)
+	const [updateCandidateInterview, {error, loading, data}]  = useMutation(UpdateCandidateInterview)
 
-        const autoScheduleCandidates = async() =>{
-            const finalInterviews = await AutoSchedule(candidatesData, interviewersData)
-            // console.log(finalInterviews,candidatesData,interviewersData)
-            finalInterviews?.forEach((interview)=>{
-                candidateAutoSchedule(interview.candidateId, interview.interviewerId, interview.timestart, interview.timeend)
-            })
-        }
-        const candidateAutoSchedule = async (candidateId, managerId, timestart, timeend) =>{
-            console.table({
-                candidateId,
-                managerId,
-                timestart: new Date(timestart),
-                timeend: new Date(timeend),
-            })
-            await updateCandidateInterview({
-                variables:{
-                    "where": {
-                        "candidateId": candidateId,
-                      },
-                    "update": {
-                        "interviewStatus": "ONGOING"
-                    },
-                      "create": {
-                        "interviewList": [
-                          {
-                            "node": {
-                              "admin": "10eb168e-fe34-474b-bc3e-233fdcbe39b4",
-                              "candidate": {
-                                "connect": {
-                                  "where": {
-                                    "node": {
-                                      "candidateId": candidateId
-                                    }
-                                  }
-                                }
-                              },
-                              "interviewer": {
-                                "connect": {
-                                  "where": {
-                                    "node": {
-                                      "interviewerId": managerId
-                                    }
-                                  }
-                                }
-                              },
-                              "releventLinks": 'link',
-                              "timeEnd": new Date(timestart),
-                              "timeStart": new Date(timeend)
-                            }
-                          }
-                        ]
-                    }
-                }
-            })
-        }
-    
-        useEffect(() => {
-        	if(loading){
-        		nProgress.start()
-        	}
-        	if(!loading&&data){
-        		nProgress.done(false)
-                console.log('success')
-        	}
-            
-        	if(error){
-        		nProgress.done(false)
-        	}
-        },[loading])
+	const autoScheduleCandidates = async () =>{
+		const finalInterviews = 
+		await AutoSchedule(candidatesData, interviewersData)
+		finalInterviews?.forEach((interview)=>{
+				candidateAutoSchedule(interview.candidateId, interview.interviewerId, interview.timestart, interview.timeend);
+		})
+	}
+
+	const candidateAutoSchedule = async (candidateId, managerId, timestart, timeend) =>{
+			console.table({
+					candidateId,
+					managerId,
+					timestart: new Date(timestart),
+					timeend: new Date(timeend),
+			})
+			await updateCandidateInterview({
+					variables:{
+							"where": {
+								"candidateId": candidateId,
+							},
+							"update": {
+								"interviewStatus": "ONGOING"
+							},
+							"create": {
+								"interviewList": [
+									{
+										"node": {
+											"admin": process.env.ADMIN_ID,
+											"candidate": {
+												"connect": {
+													"where": {
+														"node": {
+															"candidateId": candidateId
+														}
+													}
+												}
+											},
+											"interviewer": {
+												"connect": {
+													"where": {
+														"node": {
+															"interviewerId": managerId
+														}
+													}
+												}
+											},
+											"releventLinks": ['link'],
+											"timeEnd": new Date(timestart),
+											"timeStart": new Date(timeend)
+										}
+									}
+								]
+							}
+					}
+			})
+	}
+
+	useEffect(() => {
+		if(loading){
+			nProgress.start()
+		}
+		if(!loading&&data){
+			nProgress.done(false)
+				console.log('success')
+		}
+			
+		if(error){
+			nProgress.done(false)
+		}
+	},[loading])
 
 	return (
 		<button 

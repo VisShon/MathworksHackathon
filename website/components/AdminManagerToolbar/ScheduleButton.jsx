@@ -41,7 +41,7 @@ function ScheduleButton({managerId,candidateId,slot}) {
                               }
                             }
                           },
-                          "releventLinks": 'link',
+                          "releventLinks": ['link'],
                           "timeEnd": new Date(freeSlot.timestart),
                           "timeStart": new Date(freeSlot.timeend)
                         }

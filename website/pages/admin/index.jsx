@@ -32,18 +32,20 @@ function admin() {
 	console.log(selectedManager,selectedSlot,selectedCandidate)
 
 	useEffect(() => {
-		if(interviewersLoading||candidatesLoading){
+		if(interviewersLoading||candidatesLoading)
 			nProgress.start()
-		}
-		if(!interviewersLoading||candidatesError){
+		if((!interviewersLoading&&!candidatesLoading)||candidatesError){
 			nProgress.done(false)
 			setManagersData(interviewersData?.interviewers)
 			setCandidates(candidatesData?.candidates)
 		}
-		if(interviewersError||candidatesData){
+		if(interviewersError||candidatesData)
 			nProgress.done(false)
-		}
-	},[interviewersLoading,])
+
+		if(managersData)
+			setSelectedManager(managersData[0].interviewerId)
+
+	},[interviewersLoading,managersData,candidatesLoading])
 
 	
 	return (
@@ -81,6 +83,7 @@ function admin() {
 						candidates?.filter(candidate=>candidate.interviewStatus=='TOBEINTERVIEWED')
 						.map((candidate,index)=>(
 							<CandidateSlot
+								key={index}
 								id={candidate.candidateId}
 								name={candidate.name}
 								college={candidate.college}
